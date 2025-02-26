@@ -1,3 +1,4 @@
 /target
+/Cargo.lock
 /test_resources/src/*/build
 /test_resources/fixtures/*/trace/metadata
