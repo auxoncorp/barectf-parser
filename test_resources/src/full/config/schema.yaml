@@ -1,0 +1,140 @@
+--- !<tag:barectf.org,2020/3/config>
+trace:
+  environment:
+    version_major: 1
+    version_minor: 2
+  type:
+    $include:
+      - stdint.yaml
+      - stdreal.yaml
+      - stdmisc.yaml
+      - lttng-ust-log-levels.yaml
+    native-byte-order: little-endian
+    uuid: 79e49040-21b5-42d4-a83b-646f78666b62
+    $features:
+      # 32 bit magic number
+      magic-field-type: uint32
+      # 8 bit stream ID
+      data-stream-type-id-field-type: uint8
+      #uuid-field-type: false
+      uuid-field-type: true
+    clock-types:
+      default:
+        uuid: 9168b5fb-9d29-4fa5-810f-714601309ffd
+        description: "timer clock"
+        $c-type: uint64_t
+        frequency: 1000000000
+        precision: 1
+        origin-is-unix-epoch: false
+    data-stream-types:
+      default:
+        $is-default: true
+        $default-clock-type-name: default
+        $features:
+          packet:
+            # 64 bit timestamps
+            beginning-timestamp-field-type: uint64
+            end-timestamp-field-type: uint64
+            # 16 bit size fields
+            total-size-field-type: uint16
+            content-size-field-type: byte-packed-uint16
+            discarded-event-records-counter-snapshot-field-type: uint16
+            # 32 bit sequence number
+            sequence-number-field-type: uint32
+          event-record:
+            # 16 bit event IDs
+            type-id-field-type: byte-packed-uint16
+            # 64 bit timestamp
+            timestamp-field-type: uint64
+        packet-context-field-type-extra-members:
+          - pc:
+              field-type: uint32
+        event-record-common-context-field-type:
+          class: structure
+          members:
+            - ercc: uint32
+        event-record-types:
+          init:
+            specific-context-field-type:
+              class: structure
+              members:
+                - cpu_id:
+                    field-type: int32
+            payload-field-type:
+              class: structure
+              members:
+                - version: string
+          shutdown: {}
+          foobar:
+            log-level: CRIT
+            payload-field-type:
+              class: structure
+              members:
+                - val: byte-packed-uint32
+                - val2: byte-packed-uint16
+          floats:
+            log-level: WARNING
+            payload-field-type:
+              class: structure
+              members:
+                - f32: float
+                - f64: double
+          enums:
+            payload-field-type:
+              class: structure
+              members:
+                - foo:
+                    field-type:
+                      class: unsigned-enumeration
+                      size: 8
+                      alignment: 8
+                      mappings:
+                        A: [0]
+                        B: [1]
+                - bar:
+                    field-type:
+                      class: signed-enumeration
+                      size: 16
+                      alignment: 8
+                      mappings:
+                        C: [-1]
+                        D: [-22]
+                - biz:
+                    field-type:
+                      class: signed-enumeration
+                      size: 32
+                      alignment: 32
+                      mappings:
+                        RUNNING:
+                          - 17
+                          - [19, 24]
+                          - -144
+                        WAITING:
+                          - 18
+                          - [-32, -25]
+                        STOPPED: [202]
+                - baz:
+                    field-type:
+                      class: unsigned-enumeration
+                      size: 32
+                      alignment: 8
+                      preferred-display-base: hexadecimal
+                      mappings:
+                        steam-machine: [18]
+                        on/off:
+                          - 15
+                          - [200, 1000]
+                        the-prime-time-of-your-life: [2]
+          arrays:
+            payload-field-type:
+              class: structure
+              members:
+                - foo:
+                    field-type:
+                      class: static-array
+                      length: 4
+                      element-field-type: byte-packed-uint16
+                - bar:
+                    field-type:
+                      class: dynamic-array
+                      element-field-type: string

@@ -1,0 +1,54 @@
+%YAML 1.2
+--- !<tag:barectf.org,2020/3/config>
+trace:
+  environment:
+    foo: 22
+    bar: something
+  type:
+    native-byte-order: little-endian
+    $features:
+      magic-field-type: false
+      uuid-field-type: false
+      data-stream-type-id-field-type:
+        class: unsigned-integer
+        size: 8
+        alignment: 8
+    clock-types:
+      timer:
+        description: timer clock
+        $c-type: uint64_t
+        frequency: 10000000
+        precision: 1
+        origin-is-unix-epoch: false
+    data-stream-types:
+      stream_a:
+        $is-default: true
+        $default-clock-type-name: timer
+        $features:
+          packet:
+            beginning-timestamp-field-type: false
+            end-timestamp-field-type: false
+            total-size-field-type:
+              class: unsigned-integer
+              size: 16
+              alignment: 16
+            content-size-field-type:
+              class: unsigned-integer
+              size: 16
+              alignment: 16
+            discarded-event-records-counter-snapshot-field-type: false
+            sequence-number-field-type: false
+          event-record:
+            type-id-field-type:
+              class: unsigned-integer
+              size: 8
+              alignment: 8
+            timestamp-field-type:
+              class: unsigned-integer
+              size: 64
+              alignment: 64
+        event-record-types:
+          init: {}
+          shutdown: {}
+...
+
