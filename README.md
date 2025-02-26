@@ -1,4 +1,4 @@
-# barectf-parser &emsp; ![ci] [![crates.io]](https://crates.io/crates/barectf-parser) [![docs.rs]](https://docs.rs/barectf-parser)
+# barectf-parser &emsp; [![crates.io]](https://crates.io/crates/barectf-parser) [![docs.rs]](https://docs.rs/barectf-parser)
 
 A Rust library to parse [barectf]-generated [CTF] trace data.
 
@@ -55,7 +55,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[ci]: https://github.com/auxoncorp/barectf-parser/workflows/CI/badge.svg
 [crates.io]: https://img.shields.io/crates/v/barectf-parser.svg
 [docs.rs]: https://docs.rs/barectf-parser/badge.svg
 [barectf]: https://barectf.org/docs/
