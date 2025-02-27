@@ -4,7 +4,7 @@ use self::types::{
     PacketHeaderParser, Size, StreamParser, StreamReader, UIntParser, UuidParser,
 };
 use crate::{
-    config::{Config, FieldType, NativeByteOrder},
+    config::{ClockType, Config, FieldType, NativeByteOrder},
     error::Error,
     types::{Event, EventId, LogLevel, Packet, PacketContext, PacketHeader, StreamId},
 };
@@ -27,6 +27,7 @@ pub struct Parser {
     pkt_header: PacketHeaderParser,
     streams: FxHashMap<StreamId, StreamParser>,
     stream_clocks: FxHashMap<StreamId, Intern<String>>,
+    stream_clock_types: FxHashMap<StreamId, Intern<ClockType>>,
 }
 
 impl Parser {
@@ -60,6 +61,7 @@ impl Parser {
         // NOTE: barectf generates stream IDs based on alphabetical order of stream name
         let mut streams = FxHashMap::default();
         let mut stream_clocks = FxHashMap::default();
+        let mut stream_clock_types = FxHashMap::default();
         for (stream_id, (stream_name, stream)) in cfg
             .trace
             .typ
@@ -70,6 +72,10 @@ impl Parser {
         {
             if let Some(default_clock) = stream.default_clock_type_name.as_ref() {
                 stream_clocks.insert(stream_id as StreamId, Intern::new(default_clock.to_owned()));
+                if let Some(clock_type) = cfg.trace.typ.clock_types.get(default_clock) {
+                    stream_clock_types
+                        .insert(stream_id as StreamId, Intern::new(clock_type.clone()));
+                }
             }
 
             // These are required by barectf
@@ -372,6 +378,7 @@ impl Parser {
             pkt_header,
             streams,
             stream_clocks,
+            stream_clock_types,
         })
     }
 
@@ -458,6 +465,7 @@ impl Parser {
             stream_id,
             stream_name: stream.stream_name,
             clock_name: self.stream_clocks.get(&stream_id).copied(),
+            clock_type: self.stream_clock_types.get(&stream_id).copied(),
         })
     }
 

@@ -357,7 +357,7 @@ impl FeaturesUnsignedIntegerFieldType {
 }
 
 /// Offset information of a clock type’s instances.
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Deserialize)]
+#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct ClockTypeOffset {
     /// Offset in seconds.
@@ -367,7 +367,7 @@ pub struct ClockTypeOffset {
 }
 
 /// A clock type object is the type of data stream clocks.
-#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Deserialize)]
+#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct ClockType {
     /// Frequency of instances (Hz).

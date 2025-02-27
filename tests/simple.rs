@@ -50,6 +50,16 @@ fn check_simple_packet(pkt: Packet) {
             stream_id: 0,
             stream_name: Intern::new("stream_a".to_owned()),
             clock_name: Intern::new("timer".to_owned()).into(),
+            clock_type: Intern::new(ClockType {
+                frequency: 10000000,
+                offset: None,
+                origin_is_unix_epoch: false,
+                precision: 1,
+                uuid: None,
+                description: Some("timer clock".to_lowercase()),
+                c_type: "uint64_t".to_owned(),
+            })
+            .into(),
         }
     );
     assert_eq!(

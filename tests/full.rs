@@ -78,6 +78,16 @@ fn check_packet_header(h: &PacketHeader) {
             stream_id: 0,
             stream_name: Intern::new("default".to_owned()),
             clock_name: Intern::new("default".to_owned()).into(),
+            clock_type: Intern::new(ClockType {
+                frequency: 1000000000,
+                offset: None,
+                origin_is_unix_epoch: false,
+                precision: 1,
+                uuid: Some(Uuid::parse_str("9168b5fb-9d29-4fa5-810f-714601309ffd").unwrap()),
+                description: Some("timer clock".to_lowercase()),
+                c_type: "uint64_t".to_owned(),
+            })
+            .into(),
         }
     );
 }

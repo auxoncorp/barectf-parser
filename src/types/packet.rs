@@ -1,4 +1,7 @@
-use crate::types::{Event, EventCount, FieldValue, SequenceNumber, StreamId, Timestamp};
+use crate::{
+    config::ClockType,
+    types::{Event, EventCount, FieldValue, SequenceNumber, StreamId, Timestamp},
+};
 use internment::Intern;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -22,6 +25,8 @@ pub struct PacketHeader {
     pub stream_name: Intern<String>,
     /// Name of this stream's default clock
     pub clock_name: Option<Intern<String>>,
+    /// This stream's clock type
+    pub clock_type: Option<Intern<ClockType>>,
 }
 
 impl PacketHeader {
